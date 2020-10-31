@@ -12,7 +12,7 @@ public static class MeshGenerator
         float topLeftZ = (height - 1) / 2f;
 
         MeshData meshData = new MeshData(width, height);
-        int vertexIndex = 0;
+        int vertexIndex = 0; // To help us keep track of where we are in our vertices array
 
         for (int y = 0; y < height; y++)
         {
@@ -21,8 +21,17 @@ public static class MeshGenerator
                 meshData.vertices[vertexIndex] = new Vector3(topLeftX + x, heightMap[x, y], topLeftZ - y);
                 meshData.uvs[vertexIndex] = new Vector2(x / (float)width, y / (float)height);
 
-                if(x < width-1 && y < height-1)
+                if(x < width-1 && y < height-1) // We need to ignore the right and bottom edges of the map
                 {
+
+                    /**
+                     *   i ------ i+1
+                     *   | \     |
+                     *   |   \   |
+                     *   |     \ |
+                     * i+w ------ i+w+1
+                     **/
+
                     meshData.AddTriangle(vertexIndex, vertexIndex + width + 1, vertexIndex + width);
                     meshData.AddTriangle(vertexIndex + width + 1, vertexIndex, vertexIndex + 1);
                 }
@@ -38,9 +47,9 @@ public class MeshData
 {
     public Vector3[] vertices;
     public int[] triangles;
-    public Vector2[] uvs;
+    public Vector2[] uvs; // For projecting 2D to 3D
 
-    int triangleIndex;
+    int triangleIndex; // To help us keep track of where we are in the triangles list
 
     public MeshData(int meshWidth, int meshHeight)
     {
@@ -71,7 +80,7 @@ public class MeshData
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.uv = uvs;
-        mesh.RecalculateNormals();
+        mesh.RecalculateNormals(); // So that lighting works out nicely
         return mesh;
     }
 }
