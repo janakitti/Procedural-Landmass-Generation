@@ -24,6 +24,7 @@ public static class TextureGenerator
         {
             for (int x = 0; x < width; x++)
             {
+                // Get colour that corresponds to current point on heightMap, where black = 0 and white = 1
                 colourMap[y * width + x] = Color.Lerp(Color.black, Color.white, heightMap[x, y]);
             }
         }
