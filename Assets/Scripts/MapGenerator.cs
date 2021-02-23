@@ -7,7 +7,9 @@ public class MapGenerator : MonoBehaviour
     public enum DrawMode {NoiseMap, ColourMap, Mesh};
     public DrawMode drawMode;
 
-    public const int mapChunkSize = 241; // Note the actual mesh we generate will be 1 less than this
+    // Note the actual mesh we generate will be 1 less than this
+    // We choose 241 since 241 - 1 = 240 is divisible by all the even numbers from 2 to 12
+    public const int mapChunkSize = 241; 
     [Range(0,6)]
     public int levelOfDetail;
     public float noiseScale;
@@ -20,6 +22,7 @@ public class MapGenerator : MonoBehaviour
     public Vector2 offset;
 
     public float meshHeightMultiplier;
+    // Used to specify the degree to which different height values should be affected by the meshHeightMultiplier
     public AnimationCurve meshHeightCurve;
 
     public bool autoUpdate;
@@ -30,6 +33,7 @@ public class MapGenerator : MonoBehaviour
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
+        // Generate colour map
         Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
         for (int y = 0; y < mapChunkSize; y++)
         {

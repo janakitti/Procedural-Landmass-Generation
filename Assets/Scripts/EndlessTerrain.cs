@@ -16,6 +16,7 @@ public class EndlessTerrain : MonoBehaviour
 
     void Start()
     {
+        // Subtract 1 because mesh is defined by the squares, not the vertices
         chunkSize = MapGenerator.mapChunkSize - 1;
         chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
     }
@@ -28,13 +29,15 @@ public class EndlessTerrain : MonoBehaviour
 
     void UpdateVisibleChunks()
     {
-
+        // Set all the chunks that were last visible to be invisible
+        // This is because if a chunk exits the viewing distance, it won't be updated in the next for loops
         for (int i = 0; i < terrainChunksVisibleLastUpdate.Count; i++)
         {
             terrainChunksVisibleLastUpdate[i].SetVisible(false);
         }
         terrainChunksVisibleLastUpdate.Clear();
-
+        
+        // Get the chunk the viewer is currently in
         int currentChunkCoordX = Mathf.RoundToInt(viewerPosition.x / chunkSize);
         int currentChunkCoordY = Mathf.RoundToInt(viewerPosition.y / chunkSize);
         
@@ -74,6 +77,7 @@ public class EndlessTerrain : MonoBehaviour
 
             meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
             meshObject.transform.position = positionV3;
+            // Default size of plane primitive is 10 units, so normalize to 1
             meshObject.transform.localScale = Vector3.one * size / 10f;
             meshObject.transform.parent = parent;
             SetVisible(false);

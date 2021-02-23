@@ -29,9 +29,9 @@ public static class MeshGenerator
 
                     /**
                      *   i ------ i+1
-                     *   | \     |
-                     *   |   \   |
-                     *   |     \ |
+                     *   | \\     |
+                     *   |   \\   |
+                     *   |     \\ |
                      * i+vpl ---- i+vpl+1
                      **/
 
