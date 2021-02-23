@@ -29,7 +29,26 @@ public class MapGenerator : MonoBehaviour
 
     public TerrainType[] regions;
 
-    public void GenerateMap()
+    public void DrawMapInEditor()
+    {
+        MapData mapData = GenerateMapData();
+
+        MapDisplay display = FindObjectOfType<MapDisplay>();
+        if (drawMode == DrawMode.NoiseMap)
+        {
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(mapData.heightMap));
+        }
+        else if (drawMode == DrawMode.ColourMap)
+        {
+            display.DrawTexture(TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
+        }
+        else if (drawMode == DrawMode.Mesh)
+        {
+            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, levelOfDetail), TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
+        }
+    }
+
+    public MapData GenerateMapData()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
@@ -50,19 +69,7 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-
-        MapDisplay display = FindObjectOfType<MapDisplay>();
-        if (drawMode == DrawMode.NoiseMap)
-        {
-            display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
-        } else if (drawMode == DrawMode.ColourMap)
-        {
-            display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
-        } else if (drawMode == DrawMode.Mesh)
-        {
-            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, levelOfDetail), TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
-        }
-        
+        return new MapData(noiseMap, colourMap);
     }
 
     // Variable restrictions
@@ -87,4 +94,16 @@ public struct TerrainType
     public string name;
     public float height;
     public Color colour;
+}
+
+public struct MapData
+{
+    public float[,] heightMap;
+    public Color[] colourMap;
+
+    public MapData (float[,] heightMap, Color[] colourMap)
+    {
+        this.heightMap = heightMap;
+        this.colourMap = colourMap;
+    }
 }
