@@ -13,7 +13,7 @@ public class MapGenerator : MonoBehaviour
 
     // Note the actual mesh we generate will be 1 less than this
     // We choose 241 since 241 - 1 = 240 is divisible by all the even numbers from 2 to 12
-    public const int mapChunkSize = 241; 
+    public const int mapChunkSize = 239; 
     [Range(0,6)]
     public int editorPreviewLOD;
     public float noiseScale;
@@ -128,7 +128,7 @@ public class MapGenerator : MonoBehaviour
 
     public MapData GenerateMapData(Vector2 centre)
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
+        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 
         // Generate colour map
         Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
