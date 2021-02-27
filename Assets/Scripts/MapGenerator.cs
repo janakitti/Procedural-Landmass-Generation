@@ -9,6 +9,8 @@ public class MapGenerator : MonoBehaviour
     public enum DrawMode {NoiseMap, ColourMap, Mesh};
     public DrawMode drawMode;
 
+    public Noise.NormalizeMode normalizeMode;
+
     // Note the actual mesh we generate will be 1 less than this
     // We choose 241 since 241 - 1 = 240 is divisible by all the even numbers from 2 to 12
     public const int mapChunkSize = 241; 
@@ -114,7 +116,7 @@ public class MapGenerator : MonoBehaviour
 
     public MapData GenerateMapData(Vector2 centre)
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset);
+        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 
         // Generate colour map
         Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
@@ -125,9 +127,11 @@ public class MapGenerator : MonoBehaviour
                 float currentHeight = noiseMap[x, y];
                 for (int i = 0; i < regions.Length; i++)
                 {
-                    if (currentHeight <= regions[i].height)
+                    if (currentHeight >= regions[i].height)
                     {
                         colourMap[y * mapChunkSize + x] = regions[i].colour;
+                    } else
+                    {
                         break;
                     }
                 }
