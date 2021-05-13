@@ -1,11 +1,11 @@
 # Procedural Landmass Generation
 
-This is an infinite 3D terrain generator made with Unity. I learned how to create this project from Sebastian Lague's wonderful YouTube series on [Procedural Landmass Generation](https://www.youtube.com/playlist?list=PLFt_AvWsXl0eBW2EiBtl_sxmDtSgZBxB3).
+This is an infinite 3D terrain generator created using Unity. I learned how to create this project from Sebastian Lague's wonderful YouTube series on [Procedural Landmass Generation](https://www.youtube.com/playlist?list=PLFt_AvWsXl0eBW2EiBtl_sxmDtSgZBxB3). The generator uses Perlin noise to generate a height map that gets applied to vertices on a mesh.
 
 ### Features
 
 * Adjustable parameters for:
-  * `octaves`: each level of Perlin noise, layered on top of each other to finer and finer details
+  * `octaves`: each level of Perlin noise, layered on top of each other for finer and finer details
   * `lacunarity`: controls the frequency of each octave
   * `persistence`: controls the amplitude of each octave
 * Adjustable settings for terrain colours
@@ -19,3 +19,4 @@ This is an infinite 3D terrain generator made with Unity. I learned how to creat
 
 * Create custom shaders 
 * Improve the FPS controller
+* Create in-game controls for adjusting the terrain parameters and colours
